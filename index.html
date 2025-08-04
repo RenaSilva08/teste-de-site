@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEMPRE PIÁ</title>
+  <style>
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      transition: all 0.3s ease;
+    }
+
+    body.dark-mode {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+    }
+
+    .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.15;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+      backdrop-filter: blur(10px);
+      padding: 15px 40px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      min-height: 90px;
+      transition: all 0.3s ease;
+    }
+
+    body.dark-mode .wrapper {
+      background: linear-gradient(135deg, rgba(30,30,30,0.95) 0%, rgba(40,40,40,0.9) 100%);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .left-section {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    #logo {
+      color: #003366;
+      font-size: 72px;
+      margin: 0;
+      font-weight: 700;
+      background: linear-gradient(45deg, #003366, #005baa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      line-height: 1;
+    }
+
+    body.dark-mode #logo {
+      background: linear-gradient(45deg, #4a90e2, #70b3ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .slogan {
+      height: 35px;
+      margin-left: 15px;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+      transition: transform 0.3s ease;
+    }
+
+    .slogan:hover {
+      transform: scale(1.05);
+    }
+
+    .dark-mode-toggle {
+      width: 60px;
+      height: 30px;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(45deg, #e0e0e0, #f0f0f0);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 3px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .dark-mode-toggle::before {
+      content: '☀️';
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(45deg, #ffd700, #ffed4a);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      transition: all 0.3s ease;
+      transform: translateX(0px);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .dark-mode-toggle:hover {
+      transform: scale(1.05);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    body.dark-mode .dark-mode-toggle {
+      background: linear-gradient(45deg, #4a5568, #2d3748);
+      justify-content: flex-end;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    body.dark-mode .dark-mode-toggle::before {
+      content: '🌙';
+      background: linear-gradient(45deg, #718096, #a0aec0);
+      transform: translateX(0px);
+    }
+
+    body.dark-mode .dark-mode-toggle:hover {
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #003366;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 10px 15px;
+      border-radius: 25px;
+      background-color: rgba(0,91,170,0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.dark-mode .menu a {
+      color: #e0e0e0;
+      background-color: rgba(70,179,255,0.2);
+    }
+
+    .menu a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,91,170,0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .menu a:hover::before {
+      left: 100%;
+    }
+
+    .menu a:hover {
+      color: #005baa;
+      background-color: rgba(0,91,170,0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,91,170,0.2);
+    }
+
+    body.dark-mode .menu a:hover {
+      color: #70b3ff;
+      background-color: rgba(70,179,255,0.3);
+      box-shadow: 0 4px 15px rgba(70,179,255,0.2);
+    }
+
+    .redes-sociais {
+      display: flex;
+      gap: 12px;
+      margin-left: 25px;
+      padding: 10px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 25px;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    body.dark-mode .redes-sociais {
+      background: rgba(60,60,60,0.8);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .redes-sociais a {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .redes-sociais a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .redes-sociais a:hover::before {
+      transform: scale(1);
+    }
+
+    .redes-sociais a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .redes-sociais img {
+      width: 16px;
+      height: 16px;
+      z-index: 2;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .redes-sociais a:hover img {
+      transform: scale(1.1);
+    }
+
+    .banner {
+      background: linear-gradient(135deg, #005baa 0%, #003366 100%);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    body.dark-mode .banner {
+      background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    }
+
+    .banner::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+      50% { transform: translate(-50%, -50%) rotate(180deg); }
+    }
+
+    .banner h2 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 2;
+      animation: slideIn 1s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 14px;
+      color: #666;
+      background: #f8f9fa;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      margin-top: auto;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    body.dark-mode footer {
+      background: #2d3748;
+      color: #e0e0e0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Garantir que o footer fique no final */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .wrapper {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .left-section {
+        gap: 20px;
+      }
+
+      .menu {
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .menu a {
+        font-size: 14px;
+        padding: 8px 12px;
+      }
+
+      .redes-sociais {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+
+      #logo {
+        font-size: 56px;
+      }
+
+      .banner h2 {
+        font-size: 90px;
+      }
+
+      .dark-mode-toggle {
+        width: 50px;
+        height: 25px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .left-section {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      #logo {
+        font-size: 48px;
+      }
+
+      .menu {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .redes-sociais a {
+        width: 28px;
+        height: 28px;
+      }
+
+      .redes-sociais img {
+        width: 14px;
+        height: 14px;
+      }
+
+      .dark-mode-toggle {
+        width: 45px;
+        height: 22px;
+      }
+
+      .dark-mode-toggle::before {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+      }
+    }
+
+    /* Animações suaves para melhor UX */
+    .wrapper, .banner, footer {
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background-image"></div>
+
+  <div class="wrapper">
+    <div class="left-section">
+      <h1 id="logo">Piá</h1>
+      
+      <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Alternar modo escuro"></button>
+    </div>
+
+    <nav class="menu">
+      <a href="javascript:void(0)" class="menu-institucional">Institucional</a>
+      <a href="javascript:void(0)" class="menu-produtos">Produtos</a>
+      <a href="https://www.pia.com.br/receita/" class="menu-receitas">Receitas</a>
+      <a href="javascript:void(0)" class="menu-nutricao-e-saude">Dicas</a>
+      <a href="https://www.pia.com.br/campanhas/" class="menu-campanhas">Notícias</a>
+      <a href="https://www.pia.com.br/smartcoop/index.php" class="menu-campanhas">SmartCoop</a>
+      <a href="https://www.pia.com.br/contato" class="menu-contato">Contato</a>
+
+      <div class="redes-sociais">
+        <a href="https://twitter.com/cooperativapia" target="_blank" title="Twitter">
+          <img src="imagens/twitter.png" alt="Twitter">
+        </a>
+        <a href="https://www.facebook.com/cooperativa.pia" target="_blank" title="Facebook">
+          <img src="imagens/facebook.png" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com/instadapia/?hl=pt-br" target="_blank" title="Instagram">
+          <img src="imagens/instagram.png" alt="Instagram">
+        </a>
+        <a href="https://www.youtube.com/user/avidatemessesabor" target="_blank" title="YouTube">
+          <img src="imagens/youtube.png" alt="YouTube">
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="banner">
+    <h2>Conheça nossos produtos!</h2>
+  </div>
+
+  <footer>
+    © 2025 Cooperativa Piá — Todos os direitos reservados.
+  </footer>
+
+  <script>
+    function toggleDarkMode() {
+      const body = document.body;
+      const button = document.querySelector('.dark-mode-toggle');
+      
+      body.classList.toggle('dark-mode');
+      
+      // Salvar preferência
+      if (body.classList.contains('dark-mode')) {
+        button.title = 'Alternar para modo claro';
+        localStorage.setItem('darkMode', 'enabled');
+      } else {
+        button.title = 'Alternar modo escuro';
+        localStorage.setItem('darkMode', 'disabled');
+      }
+    }
+
+    // Carregar preferência salva
+    document.addEventListener('DOMContentLoaded', function() {
+      const darkMode = localStorage.getItem('darkMode');
+      const button = document.querySelector('.dark-mode-toggle');
+      
+      if (darkMode === 'enabled') {
+        document.body.classList.add('dark-mode');
+        button.title = 'Alternar para modo claro';
+      }
+    });
+  </script>
+
+</body>
+</html>
